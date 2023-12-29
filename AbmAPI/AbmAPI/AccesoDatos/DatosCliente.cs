@@ -58,11 +58,12 @@ namespace AbmAPI.AccesoDatos
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@nombre", cliente.nombre);
                     cmd.Parameters.AddWithValue("@apellido", cliente.apellido);
-                    cmd.Parameters.AddWithValue("@dni", cliente.dni);
+                    cmd.Parameters.AddWithValue("@dni", cliente.dni); 
                     cmd.Parameters.AddWithValue("@telefono", cliente.telefono);
                     cmd.Parameters.AddWithValue("@direccion", cliente.direccion);
                     await con.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
+                    //comentario
                 }
             }
         }
