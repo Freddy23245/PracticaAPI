@@ -45,9 +45,10 @@ namespace AbmAPI.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task Agregar([FromBody] Usuarios usuarios)
+        public async Task<IActionResult> Agregar([FromBody] Usuarios usuarios)
         {
-                 await _datosUsuario.Agregar(usuarios);
+                var usu =  await _datosUsuario.Agregar(usuarios);
+            return Ok(usu);
 
         }
         [HttpPut]

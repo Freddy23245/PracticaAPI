@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Add services to the container.
 builder.Services.AddSingleton<DatosUsuario>();
 builder.Services.AddSingleton<DatosCliente>();
+builder.Services.AddSingleton<DatosProducto>();
 
 builder.Services.AddControllers();
 
@@ -36,6 +37,7 @@ var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("UsuarioConexion");
 app.Services.GetRequiredService<DatosUsuario>().ConfigurarConexion(connectionString);
 app.Services.GetRequiredService<DatosCliente>().ConfigurarConexion(connectionString);
+app.Services.GetRequiredService<DatosProducto>().ConfigurarConexion(connectionString);
 app.UseAuthentication();
 app.UseAuthorization();
 

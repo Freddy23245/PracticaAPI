@@ -51,8 +51,9 @@ namespace AbmAPI.AccesoDatos
             return usuarios;
         }
 
-        public async Task Agregar(Usuarios usu)
+        public async Task<IEnumerable<Usuarios>> Agregar(Usuarios usu)
         {
+            List<Usuarios> usuariosAgregados = new List<Usuarios>();
             using (var con = new SqlConnection(_connectionString))
             {
                 using (var cmd = new SqlCommand("Sp_Agregar", con))
@@ -64,8 +65,30 @@ namespace AbmAPI.AccesoDatos
                     cmd.Parameters.AddWithValue("@password", usu.password);
                     await con.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
+
+                    using (SqlCommand selectCommand = new SqlCommand("SELECT * FROM Usuarios where idUsuario = (select MAX(idUsuario) from Usuarios)", con))
+                    {
+                        using (SqlDataReader reader = selectCommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                usuariosAgregados.Add(new Usuarios
+                                {
+                                    idUsuario = Convert.ToInt32(reader["idUsuario"]),
+                                    nombre = reader["nombre"].ToString(),
+                                    apellido = reader["apellido"].ToString(),
+                                    usuario = reader["usuario"].ToString(),
+                                    password = reader["password"].ToString(),
+                                });
+                            }
+                        }
+                    }
+                   
+
+
                 }
             }
+            return usuariosAgregados;
         }
 
         public async Task Editar(Usuarios usu)
